@@ -4,7 +4,17 @@
     <title>Spring Security Example</title>
 </head>
 <body>
-<h1>Welcome to Index PAGE!</h1>
+<h1>Добро пожаловать в Spring Security Application!</h1>
+
+<br>
+<div sec:authorize="!isAuthenticated()">
+    <a th:href="@{/login}" class="btn btn-primary">Войти</a>
+</div>
+<br>
+<div class="d-grid gap-2 col-md-6 mx-auto">
+    <a th:href="@{/register}" class="btn btn-primary btn-lg">
+        Зарегистрироваться
+    </a>
 
 
 </body>
