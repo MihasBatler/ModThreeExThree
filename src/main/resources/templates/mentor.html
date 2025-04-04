@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+    <title>Mentor</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+<body>
+
+<h1>Иван, добро пожаловать в Spring Security Application!</h1>
+
+<p>Вам предоставлен доступ с ролями ADNIN и USER</p>
+<p class="fs-5">Ваш логин:  ivan</p>
+
+<p class="fs-5">Ваш пароль:  Единицы. Их количество соответствует количеству
+    букв в Вашей фамилии, делённое на 2</p>
+
+<br>
+<div sec:authorize="!isAuthenticated()">
+  <a th:href="@{/login}" class="btn btn-primary">Войти</a>
+<br>
+    <br>
+
+  <a th:href="@{/}" class="btn btn-primary">Назад</a>
+</div>
+</body>
+</html>

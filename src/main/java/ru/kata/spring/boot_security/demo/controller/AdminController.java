@@ -23,22 +23,30 @@ public class AdminController {
         this.userServiceInf = userServiceInf;
         this.roleService = roleService;
     }
+
     @GetMapping(value = "/admin/main")
     public String printTable(Model model) {
         List<User> myUser = userServiceInf.getAll();
         model.addAttribute("users", myUser);
         return "mainAdminPage";
     }
+
     @GetMapping(value = "/admin/user")
     public String getUser(Model model, @RequestParam("id") Long id) {
         User user = userServiceInf.getUserById(id);
+        if (user == null) {
+            model.addAttribute("errorMessage", "Пользователь с ID " + id + " не найден");
+            return "form";
+        }
         model.addAttribute("user", user);
         return "userOfAdmin";
     }
+
     @GetMapping(value = "/admin/form")
     public String showForm() {
         return "form";
     }
+
     @GetMapping(value = "/admin/updateForm")
     public String showUpdateForm(Model model, @RequestParam("id") Long id) {
         User user = userServiceInf.getUserById(id);
@@ -46,6 +54,7 @@ public class AdminController {
         model.addAttribute("allRoles", roleService.getAllRoles());
         return "updateForm";
     }
+
     @PatchMapping(value = "/admin/update")
     public String update(@ModelAttribute("upUser") User userForm,
                          @RequestParam("roleIds") List<Long> roleIds) {
@@ -57,6 +66,7 @@ public class AdminController {
         userServiceInf.add(existingUser);
         return "redirect:/admin/main";
     }
+
     @GetMapping(value = "/admin/new")
     public String addUserForm(Model model) {
         User user = new User();
@@ -72,6 +82,7 @@ public class AdminController {
         userServiceInf.add(user);
         return "redirect:/admin/main";
     }
+
     @DeleteMapping("/admin/delete")
     public String remove(Model model, @RequestParam("id") Long id) {
         userServiceInf.removeUserById(id);

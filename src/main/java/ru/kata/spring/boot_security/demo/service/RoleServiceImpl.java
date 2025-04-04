@@ -11,7 +11,7 @@ import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Service
-public class RoleServiceImpl implements RoleService{
+public class RoleServiceImpl implements RoleService {
     private final RoleRepository roleRepository;
 
     @Autowired
