@@ -25,21 +25,21 @@ public class RoleServiceImpl implements RoleService {
         return roleRepository.findAll();
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public Role getRoleById(Long id) {
         return roleRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Role not found with id: " + id));
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public Role getRoleByName(String name) {
         return roleRepository.findByName(name)
                 .orElseThrow(() -> new EntityNotFoundException("Role not found: " + name));
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public List<Role> getRolesByIds(List<Long> ids) {
         return roleRepository.findByIds(ids);

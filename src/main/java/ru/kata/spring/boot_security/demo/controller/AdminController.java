@@ -6,34 +6,33 @@ import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.RoleService;
-import ru.kata.spring.boot_security.demo.service.UserServiceInf;
+import ru.kata.spring.boot_security.demo.service.UserService;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @RequestMapping
 @Controller
 public class AdminController {
-    private final UserServiceInf userServiceInf;
+    private final UserService userService;
     private final RoleService roleService;
 
-    public AdminController(UserServiceInf userServiceInf,
+    public AdminController(UserService userService,
                            RoleService roleService) {
-        this.userServiceInf = userServiceInf;
+        this.userService = userService;
         this.roleService = roleService;
     }
 
     @GetMapping(value = "/admin/main")
     public String printTable(Model model) {
-        List<User> myUser = userServiceInf.getAll();
+        List<User> myUser = userService.getAll();
         model.addAttribute("users", myUser);
         return "mainAdminPage";
     }
 
     @GetMapping(value = "/admin/user")
     public String getUser(Model model, @RequestParam("id") Long id) {
-        User user = userServiceInf.getUserById(id);
+        User user = userService.getUserById(id);
         if (user == null) {
             model.addAttribute("errorMessage", "Пользователь с ID " + id + " не найден");
             return "form";
@@ -49,7 +48,7 @@ public class AdminController {
 
     @GetMapping(value = "/admin/updateForm")
     public String showUpdateForm(Model model, @RequestParam("id") Long id) {
-        User user = userServiceInf.getUserById(id);
+        User user = userService.getUserById(id);
         model.addAttribute("findUser", user);
         model.addAttribute("allRoles", roleService.getAllRoles());
         return "updateForm";
@@ -58,14 +57,15 @@ public class AdminController {
     @PatchMapping(value = "/admin/update")
     public String update(@ModelAttribute("upUser") User userForm,
                          @RequestParam("roleIds") List<Long> roleIds) {
-        User existingUser = userServiceInf.getUserById(userForm.getId());
-        userServiceInf.updateUser(userForm, existingUser);
+        User existingUser = userService.getUserById(userForm.getId());
+        userService.updateUser(userForm, existingUser);
         List<Role> selectedRole = roleService.getRolesByIds(roleIds);
         existingUser.getRoles().clear();
         existingUser.getRoles().addAll(selectedRole);
-        userServiceInf.add(existingUser);
+        userService.add(existingUser);
         return "redirect:/admin/main";
     }
+
 
     @GetMapping(value = "/admin/new")
     public String addUserForm(Model model) {
@@ -79,28 +79,29 @@ public class AdminController {
     public String addUser(@ModelAttribute("user") User user, @RequestParam("roleIds") List<Long> roleIds) {
         List<Role> selectedRole = roleService.getRolesByIds(roleIds);
         user.setRoles(new HashSet<>(selectedRole));
-        userServiceInf.add(user);
+        userService.add(user);
         return "redirect:/admin/main";
     }
 
     @DeleteMapping("/admin/delete")
     public String remove(Model model, @RequestParam("id") Long id) {
-        userServiceInf.removeUserById(id);
+        userService.removeUserById(id);
         return "redirect:/admin/main";
     }
 
-    @GetMapping(value = "/register")
-    public String addUserRegister(Model model) {
-        User user = new User();
-        model.addAttribute("newUserReg", user);
-        return "formRegister";
+    @GetMapping(value = "/admin")
+    public String print() {
+        return "admin";
     }
 
-    @PostMapping(value = "/add")
-    public String addRegister(@ModelAttribute("newUserReg") User user) {
-        Role userRole = roleService.getRoleByName("ROLE_USER");
-        user.setRoles(Set.of(userRole));
-        userServiceInf.add(user);
-        return "redirect:/user";
+    @GetMapping("/access")
+    public String accessDenied() {
+        return "access";
+    }
+
+    @GetMapping("/mentor")
+    public String messageToMentor() {
+        return "mentor";
     }
 }
+
