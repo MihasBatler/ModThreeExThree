@@ -7,46 +7,39 @@
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
 <body>
+<div th:fragment="user">
 
-<div class="position-fixed top-0 end-0 p-3" style="z-index: 1000;">
-    <form th:action="@{/logout}" method="post">
-        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-        <button type="submit" class="btn btn-outline-danger">
-            <i class="bi bi-box-arrow-right"></i> Выйти
-        </button>
-    </form>
-</div>
-
-<div class="container mt-4">
-
-    <div class="alert alert-info" th:if="${user} != null">
-        <h4>Добро пожаловать, <span th:text="${user.name}"></span>!</h4>
+    <h1 class="ps-3">User information-page</h1>
+    <div class="container-fluid">
+        <div class="row border">
+            <h5 class="p-2">About user</h5>
+        </div>
+        <div class="row border bg-white">
+            <table class="table table-borderless table-striped">
+                <thead>
+                <tr class="border-top">
+                    <th scope="col">ID</th>
+                    <th scope="col">First Name</th>
+                    <th scope="col">Last Name</th>
+                    <th scope="col">Age</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Role</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="border-top bg-light" th:object="${user}">
+                    <td th:text="*{id}"/>
+                    <td th:text="*{name}"/>
+                    <td th:text="*{lastName}"/>
+                    <td th:text="*{age}"/>
+                    <td th:text="*{email}"/>
+                    <td>
+                        <th:block th:each="role : *{getRoles()}">
+                            &nbsp;<span th:text="${role.name.replace('ROLE_', '')}"/>
+                        </th:block>
+                    </td>
+                </tr>
+            </table>
+        </div>
     </div>
-<table class="table table-dark">
-    <thead>
-    <tr>
-        <th scope="col">ID</th>
-        <th scope="col">Name</th>
-        <th scope="col">LastName</th>
-        <th scope="col">Address</th>
-        <th scope="col">Age</th>
-        <th scope="col">Username</th>
-
-
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-        <td th:text="${user.id}"></td>
-        <td th:text="${user.name}"></td>
-        <td th:text="${user.lastName}"></td>
-        <td th:text="${user.address}"></td>
-        <td th:text="${user.age}"></td>
-        <td th:text="${user.username}"></td>
-    </tr>
-    </tbody>
-</table>
-    <br>
-    <a th:href="@{/admin/main}" class="btn btn-primary">Я администратор</a>
-</body>
-</html>
+</div>

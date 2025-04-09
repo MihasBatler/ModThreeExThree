@@ -1,7 +1,6 @@
 package ru.kata.spring.boot_security.demo.controller;
 
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -33,8 +32,7 @@ public class UserController {
 
     @GetMapping(value = "/user")
     public String getUser(Model model, Authentication authentication) {
-        String username = authentication.getName();
-        UserDetails user = userService.loadUserByUsername(username);
+        User user = (User) authentication.getPrincipal();
         model.addAttribute("user", user);
         return "user";
     }
@@ -52,5 +50,10 @@ public class UserController {
         user.setRoles(Set.of(userRole));
         userService.add(user);
         return "redirect:/user";
+    }
+
+    @GetMapping(value = "/login")
+    public String login() {
+        return "login";
     }
 }

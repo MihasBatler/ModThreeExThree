@@ -13,4 +13,6 @@ public interface RoleService {
 
     List<Role> getRolesByIds(List<Long> ids);
 
+    void save(Role role);
+
 }

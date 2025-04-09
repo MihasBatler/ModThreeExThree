@@ -8,68 +8,125 @@
 </head>
 <body>
 
-<div class="position-fixed top-0 end-0 p-3" style="z-index: 1000;">
-  <form th:action="@{/logout}" method="post">
-    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-    <button type="submit" class="btn btn-outline-danger">
-      <i class="bi bi-box-arrow-right"></i> Выйти
-    </button>
-  </form>
-</div>
+<!--<div class="position-fixed top-0 end-0 p-3" style="z-index: 1000;">-->
+<!--  <form th:action="@{/logout}" method="post">-->
+<!--    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>-->
+<!--    <button type="submit" class="btn btn-outline-danger">-->
+<!--      <i class="bi bi-box-arrow-right"></i> Выйти-->
+<!--    </button>-->
+<!--  </form>-->
+<!--</div>-->
 
-<h1>Заполните данные</h1>
-<br>
-<form th:action="@{/admin/add}" th:object="${newUser}" method="post">
-  <label for="name">Введите имя: </label>
-  <input type="text" th:field="*{name}" id="name"/>
-  <br>
-  <br/>
-  <label for="lastName">Введите фамилию: </label>
-  <input type="text" th:field="*{lastName}" id="lastName"/>
-  <br>
-  <br/>
-  <label for="address">Введите город: </label>
-  <input type="text" th:field="*{address}" id="address"/>
-  <br>
-  <br/>
-  <label for="age">Введите возраст: </label>
-  <input type="text" th:field="*{age}" id="age"/>
-  <br>
-  <br/>
-  <label for="username">Введите логин:</label>
-  <input type="text" th:field="*{username}" id="username"/>
-  <br>
-  <br/>
-  <label for="enabled">Активен:</label>
-  <input type="checkbox" th:field="*{enabled}" id="enabled"/>
-  <br>
-  <br/>
-  <div class="form-group">
-    <label for="password">Пароль:</label>
-    <input type="password"
-           class="form-control"
-           id="password"
-           name="password"
-    th:field="*{password}"
-    minlength="3"
-    required>
-  </div>
-  <div class="mb-3">
-    <label for="roles" class="form-label">Роль:</label>
-    <select class="form-select" id="roles" name="roleIds" multiple required>
-      <option value="" disabled selected>Выберите роль</option>
-      <option th:each="role : ${allRoles}"
-              th:value="${role.id}"
-              th:text="${role.name}"
-              th:selected="${#lists.contains(newUser.roles.![id], role.id)}">
-      </option>
-    </select>
-    <small class="form-text text-muted">Для выбора нескольких ролей удерживайте Ctrl (Windows) или Command (Mac)</small>
-  </div>
+<!--<h1>Заполните данные</h1>-->
+<!--<br>-->
+<!--<form th:action="@{/admin/add}" th:object="${newUser}" method="post">-->
+<!--  <label for="name">Введите имя: </label>-->
+<!--  <input type="text" th:field="*{name}" id="name"/>-->
+<!--  <br>-->
+<!--  <br/>-->
+<!--  <label for="lastName">Введите фамилию: </label>-->
+<!--  <input type="text" th:field="*{lastName}" id="lastName"/>-->
+<!--  <br>-->
+<!--  <br/>-->
+<!--  <label for="email">Введите фамилию: </label>-->
+<!--  <input type="text" th:field="*{email}" id="email"/>-->
+<!--  <br>-->
+<!--  <br/>-->
+<!--  <label for="age">Введите возраст: </label>-->
+<!--  <input type="text" th:field="*{age}" id="age"/>-->
+<!--  <br>-->
+<!--  <br/>-->
 
-  <input type="submit" value="Добавить"/>
-</form>
-<br>
-<a th:href="@{/admin/main}" class="btn btn-outline-primary btn-sm">Назад</a>
-</body>
-</html>
+<!--  <label for="enabled">Активен:</label>-->
+<!--  <input type="checkbox" th:field="*{enabled}" id="enabled"/>-->
+<!--  <br>-->
+<!--  <br/>-->
+<!--  <div class="form-group">-->
+<!--    <label for="password">Пароль:</label>-->
+<!--    <input type="password"-->
+<!--           class="form-control"-->
+<!--           id="password"-->
+<!--           name="password"-->
+<!--    th:field="*{password}"-->
+<!--    minlength="3"-->
+<!--    required>-->
+<!--  </div>-->
+<!--  <div class="mb-3">-->
+<!--    <label for="roles" class="form-label">Роль:</label>-->
+<!--    <select class="form-select" id="roles" name="roleIds" multiple required>-->
+<!--      <option value="" disabled selected>Выберите роль</option>-->
+<!--      <option th:each="role : ${allRoles}"-->
+<!--              th:value="${role.id}"-->
+<!--              th:text="${role.name}"-->
+<!--              th:selected="${#lists.contains(newUser.roles.![id], role.id)}">-->
+<!--      </option>-->
+<!--    </select>-->
+<!--    <small class="form-text text-muted">Для выбора нескольких ролей удерживайте Ctrl (Windows) или Command (Mac)</small>-->
+<!--  </div>-->
+
+<!--  <input type="submit" value="Добавить"/>-->
+<!--</form>-->
+<!--<br>-->
+<!--<a th:href="@{/admin/main}" class="btn btn-outline-primary btn-sm">Назад</a>-->
+
+
+<!--<div class="tab-pane fade show active" id="newUser" role="tabpanel" aria-labelledby="new-user-tab">-->
+<!--  <div class="p-2">-->
+<!--    <h5>Add new user</h5>-->
+<!--  </div>-->
+
+<!--  <div class="row justify-content-center align-items-center bg-white p-4">-->
+<!--    <div class="col-md-6">-->
+<!--      <form class="text-center" th:action="@{/admin/add}" th:object="${newUser}" method="post">-->
+<!--        <div class="form-group fw-bold mb-4">-->
+<!--          <div class="row">-->
+<!--            <div class="col-md-6 mb-3">-->
+<!--              <label for="name" class="form-label">First name</label>-->
+<!--              <input type="text" class="form-control" id="name" th:field="*{name}" required>-->
+<!--            </div>-->
+
+<!--            <div class="col-md-6 mb-3">-->
+<!--              <label for="lastName" class="form-label">Last name</label>-->
+<!--              <input type="text" class="form-control" id="lastName" th:field="*{lastName}" required>-->
+<!--            </div>-->
+<!--          </div>-->
+
+<!--          <div class="row">-->
+<!--            <div class="col-md-6 mb-3">-->
+<!--              <label for="age" class="form-label">Age</label>-->
+<!--              <input type="number" class="form-control" id="age" th:field="*{age}" required>-->
+<!--            </div>-->
+
+<!--            <div class="col-md-6 mb-3">-->
+<!--              <label for="email" class="form-label">Email</label>-->
+<!--              <input type="email" class="form-control" id="email" th:field="*{email}" required>-->
+<!--            </div>-->
+<!--          </div>-->
+
+<!--          <div class="row">-->
+<!--            <div class="col-md-6 mb-3">-->
+<!--              <label for="password" class="form-label">Password</label>-->
+<!--              <input type="password" class="form-control" id="password" th:field="*{password}" required>-->
+<!--            </div>-->
+
+<!--            <div class="col-md-6 mb-3">-->
+<!--              <label for="roles" class="form-label">Role</label>-->
+<!--              <select class="form-select w-100" multiple size="2" id="roles" name="roleIds" required>-->
+<!--                <option th:each="role : ${allRoles}"-->
+<!--                        th:value="${role.id}"-->
+<!--                        th:text="${role.name.replace('ROLE_', '')}">-->
+<!--                </option>-->
+<!--              </select>-->
+<!--            </div>-->
+<!--          </div>-->
+
+<!--          <div class="mt-4">-->
+<!--            <button type="submit" class="btn btn-success">Add new user</button>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </form>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
+<!--</body>-->
+<!--</html>-->

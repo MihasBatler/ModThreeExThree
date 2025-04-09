@@ -27,8 +27,8 @@ public class User implements UserDetails {
     @Column(name = "lastName")
     private String lastName;
 
-    @Column(name = "address")
-    private String address;
+    @Column(name = "email")
+    private String email;
 
     @Column(name = "age")
     private int age;
@@ -51,10 +51,11 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(String name, String lastName, String address, int age, String username, String password) {
+    public User(String name, String lastName, int age,
+                String email, String username, String password) {
         this.name = name;
         this.lastName = lastName;
-        this.address = address;
+        this.email = email;
         this.age = age;
         this.username = username;
         this.password = password;
@@ -68,13 +69,6 @@ public class User implements UserDetails {
         this.age = age;
     }
 
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
 
     public String getLastName() {
         return lastName;
@@ -120,17 +114,30 @@ public class User implements UserDetails {
         this.roles = roles;
     }
 
+    public void addRole(Role role) {
+        this.roles.add(role);
+    }
+
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return age == user.age && Objects.equals(id, user.id) && Objects.equals(name, user.name) && Objects.equals(lastName, user.lastName) && Objects.equals(address, user.address) && Objects.equals(roles, user.roles);
+        return age == user.age && Objects.equals(id, user.id) && Objects.equals(name, user.name) && Objects.equals(lastName, user.lastName) && Objects.equals(email, user.email) && Objects.equals(roles, user.roles);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, lastName, address, age, roles);
+        return Objects.hash(id, name, lastName, email, age, roles);
     }
 
     @Override
@@ -138,7 +145,7 @@ public class User implements UserDetails {
         return "User{" +
                 "roles=" + roles +
                 ", age=" + age +
-                ", address='" + address + '\'' +
+                ", email='" + email + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", name='" + name + '\'' +
                 ", id=" + id +
@@ -159,7 +166,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return username;
+        return email;
     }
 
     @Override

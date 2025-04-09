@@ -6,22 +6,30 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
+import ru.kata.spring.boot_security.demo.repositories.RoleRepository;
 import ru.kata.spring.boot_security.demo.repositories.UserRepository;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final RoleRepository roleRepository;
+    private final RoleService roleService;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder, RoleRepository roleRepository, RoleService roleService) {
         this.userRepository = userRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.roleRepository = roleRepository;
+        this.roleService = roleService;
     }
 
     @Transactional
@@ -41,23 +49,25 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void updateUser(User user, User existingUser) {
+    public void updateUser(Long id, User user, List<Long> roleIds) {
+        User existingUser = getUserById(id);
         if (user.getName() != null) {
             existingUser.setName(user.getName());
         }
         if (user.getLastName() != null) {
             existingUser.setLastName(user.getLastName());
         }
+        if (user.getEmail() != null) {
+            existingUser.setEmail(user.getEmail());
+        }
         if (user.getAge() > 0) {
             existingUser.setAge(user.getAge());
         }
-        if (user.getAddress() != null) {
-            existingUser.setAddress(user.getAddress());
-        }
-        if (user.getUsername() != null) {
-            existingUser.setUsername(user.getUsername());
-        }
+
         existingUser.setEnabled(user.isEnabled());
+
+        Set<Role> roles = new HashSet<>(roleService.getRolesByIds(roleIds));
+        existingUser.setRoles(roles);
         userRepository.save(existingUser);
     }
 
@@ -78,8 +88,8 @@ public class UserServiceImpl implements UserService {
 
     @Transactional(readOnly = true)
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findByUsername(username)
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        return userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
