@@ -65,7 +65,10 @@ public class AdminController {
     public String updateUser(
             @PathVariable Long id,
             @ModelAttribute("upUser") User user,
-            @RequestParam("roleIds") List<Long> roleIds) {// Явно укажите имя параметра
+            @RequestParam(value = "roleIds", required = false) List<Long> roleIds) {
+
+        User existingUser = userService.getUserById(id); //нов
+        existingUser.getRoles();
 
         if (roleIds == null) {
             roleIds = Collections.emptyList();

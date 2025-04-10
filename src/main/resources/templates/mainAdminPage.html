@@ -265,7 +265,7 @@
                                                             <form class="text-center"
                                                                   th:action="@{/admin/update/{id}(id=${user.id})}"
                                                                   th:method="POST"
-                                                                  th:object="${user}"
+                                                                  th:object="${upUser}"
                                                                   id="editFormBody">
 
 
@@ -289,7 +289,7 @@
                                                                             name</label>
                                                                         <input type="text" class="form-control"
                                                                                id="firstNameEdit"
-                                                                               name="firstName"
+                                                                               name="name"
                                                                                th:value="${user.name}"/>
                                                                     </div>
 
@@ -325,7 +325,9 @@
                                                                                class="col-form-label">Password</label>
                                                                         <input type="password" class="form-control"
                                                                                id="passwordEdit"
-                                                                               name="password" disabled/>
+                                                                               name="password"/>
+
+<!--                                                                               disabled/>-->
 
                                                                     </div>
 
@@ -338,7 +340,8 @@
                                                                                 <option th:each="role : ${allRoles}"
                                                                                         th:value="${role.id}"
                                                                                         th:text="${role.name.replace('ROLE_', '')}"
-                                                                                        th:selected="${#lists.contains(upUser?.roles?.![id], role.id)}">
+                                                                                        th:selected="${#lists.contains(upUser.roles.![id], role.id)}">
+<!--                                                                                        th:selected="${#lists.contains(upUser?.roles?.![id], role.id)}">-->
                                                                                 </option>
                                                                             </select>
 

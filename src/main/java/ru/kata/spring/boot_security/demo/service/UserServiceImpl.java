@@ -63,11 +63,16 @@ public class UserServiceImpl implements UserService {
         if (user.getAge() > 0) {
             existingUser.setAge(user.getAge());
         }
+        if (user.getPassword() != null && !user.getPassword().isEmpty()) {
+            existingUser.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        }
 
-        existingUser.setEnabled(user.isEnabled());
+        existingUser.setEnabled(true);
 
         Set<Role> roles = new HashSet<>(roleService.getRolesByIds(roleIds));
         existingUser.setRoles(roles);
+
+
         userRepository.save(existingUser);
     }
 
@@ -91,6 +96,8 @@ public class UserServiceImpl implements UserService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+
     }
 
 }
